@@ -3,14 +3,31 @@ import { DATABASE_URL } from './database.constants';
 import { DRIZZLE } from './database.constants';
 import { drizzle } from 'drizzle-orm/node-mssql';
 import * as schema from '../schemas/index';
+import type { config as MsSqlConfig } from 'mssql';
+import { connect } from 'mssql';
+
 @Global()
 @Module({
   providers: [
     {
       provide: DRIZZLE,
       inject: [],
-      useFactory: () => {
-        return drizzle(DATABASE_URL, { schema: schema });
+      useFactory: async () => {
+        const dbConfig: MsSqlConfig = {
+          server: 'SRV-BD-1',
+          port: 1433,
+          user: 'alunos_des225',
+          password: '123',
+          database: 'des225_cristiano',
+          options: {
+            encrypt: false,
+            trustServerCertificate: true,
+          },
+        };
+
+        const pool = await connect(dbConfig);
+
+        return drizzle({ client: pool, schema: schema });
       },
     },
   ],
