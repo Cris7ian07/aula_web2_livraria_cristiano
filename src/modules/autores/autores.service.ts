@@ -28,7 +28,7 @@ export class AutoresService {
   constructor(private readonly autoresRepository: AutoresRepository) {}
 
   async listarAutores() {
-    return await this.autoresRepository.listarAutores;
+    return await this.autoresRepository.listarAutores();
   }
 
   async listarAutor(id: number) {
@@ -51,11 +51,9 @@ export class AutoresService {
     return this.autoresRepository.atualizarAutor(idAutor, bodyRequest);
   }
 
-  deletarAutor(idAutor: number) {
-    this.listarAutor(idAutor);
+  async deletarAutor(idAutor: number) {
+    await this.listarAutor(idAutor);
 
-    autores = autores.filter((autor) => autor.id !== idAutor);
-
-    return autores;
+    return this.autoresRepository.deletarAutor(idAutor);
   }
 }
