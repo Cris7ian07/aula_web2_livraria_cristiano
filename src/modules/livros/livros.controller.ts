@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -34,7 +35,11 @@ export class LivrosController {
   }
 
   @Get('listar-livro-com-autor/:id')
-  async listarlivroComAutor(@Param('id', ParseIntPipe) id: number) {
+  async listarLivroComAutor(@Param('id', ParseIntPipe) id: number) {
     return await this.LivrosService.listarLivroComAutor(id);
+  }
+  @Delete('deletar-livro/:id')
+  async deletarLivro(@Param('id', ParseIntPipe) id: number) {
+    return await this.LivrosService.deletarLivro(id);
   }
 }
